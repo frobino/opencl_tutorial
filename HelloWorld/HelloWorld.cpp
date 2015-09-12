@@ -61,13 +61,35 @@ int main(int argc, char* argv[])
 	/*Step1: Getting platforms and choose an available one.*/
 	cl_uint numPlatforms;//the NO. of platforms
 	cl_platform_id platform = NULL;//the chosen platform
-	cl_int	status = clGetPlatformIDs(0, NULL, &numPlatforms);
+	cl_platform_id* platforms = NULL;
+
+	clGetPlatformIDs( 0,0,&numPlatforms);
+	
+	platforms = (cl_platform_id*)malloc(numPlatforms*sizeof(cl_platform_id));
+	cout<<"Identified "<<numPlatforms<<" platforms."<<endl;
+	  
+	cl_int	status = clGetPlatformIDs(numPlatforms, platforms, 0);
+	   
 	if (status != CL_SUCCESS)
 	{
 		cout<<"Error: Getting platforms!"<<endl;
 		return 1;
 	}
 
+	
+	cl_uint i;
+	char buffer_plat[256];
+	
+	for(i=0; i<numPlatforms; i++) {
+		platform = platforms[i];
+		clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer_plat,0);
+		cout<<"Identified following platforms:"<<endl;
+
+		cout<<buffer_plat<<endl;
+		
+		//if (!strcmp(buffer_plat,"coprthr")) break;
+	}
+	
 	/*For clarity, choose the first available platform. */
 	if(numPlatforms > 0)
 	{
@@ -162,6 +184,8 @@ int main(int argc, char* argv[])
 		free(devices);
 		devices = NULL;
 	}
+
+	free(platforms);
 
 	return 0;
 }

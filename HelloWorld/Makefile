@@ -3,17 +3,17 @@
 
 CC=g++
 
-FOLDER_INC=/opt/AMDAPP/include/
-FOLDER_LIB=/opt/AMDAPP/lib/x86_64/
+FOLDER_INC= # -I /opt/AMDAPP/include/
+FOLDER_LIB= # -L /opt/AMDAPP/lib/x86_64/
 
-CFLAGS=-c -Wall -I $(FOLDER_INC)
-LDFLAGS= -L $(FOLDER_LIB) -l OpenCL
+CFLAGS=-c -Wall $(FOLDER_INC)
+LDFLAGS= $(FOLDER_LIB) -l OpenCL
 SOURCES=HelloWorld.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=hello
 
 all: $(SOURCES) $(EXECUTABLE)
-	
+
 $(EXECUTABLE): $(OBJECTS) 
 	$(CC) $(OBJECTS) -o $@ $(LDFLAGS) 
 
